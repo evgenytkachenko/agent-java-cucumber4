@@ -27,6 +27,7 @@ import cucumber.api.*;
 import cucumber.api.event.*;
 import cucumber.api.formatter.Formatter;
 import io.reactivex.Maybe;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
 import org.slf4j.Logger;
@@ -199,6 +200,11 @@ public abstract class AbstractReporter implements Formatter {
 				skippedIssueAttr.setValue(skippedAnIssue == null ? "true" : skippedAnIssue.toString());
 				skippedIssueAttr.setSystem(true);
 				rq.getAttributes().add(skippedIssueAttr);
+
+				rq.setRerun(parameters.isRerun());
+				if (StringUtils.isNotEmpty(parameters.getRerunOf())) {
+					rq.setRerunOf(parameters.getRerunOf());
+				}
 
 				return reportPortal.newLaunch(rq);
 			}
